@@ -1,0 +1,45 @@
+{
+  "date": "2026-04-11",
+  "server": "Server5 — AMD EPYC 12c, 48GB RAM, Ubuntu 24.04",
+  "engine": "Qomni Engine v7.3",
+  "kernel": "AVX2 4-Row Tiling (Rust)",
+  "benchmark": [
+    {
+      "case": "FFN gate/up 500M",
+      "matrix": "4096x2048",
+      "avx2_ms": 8.5241036,
+      "scalar_ms": 13.21872,
+      "float32_ms": 18.7659775,
+      "speedup_vs_f32": 2.20
+    },
+    {
+      "case": "FFN down 500M",
+      "matrix": "2048x4096",
+      "avx2_ms": 7.55519635,
+      "scalar_ms": 7.4906291,
+      "float32_ms": 11.3308006,
+      "speedup_vs_f32": 1.50
+    },
+    {
+      "case": "Attn Q/K/V 500M",
+      "matrix": "2048x2048",
+      "avx2_ms": 8.07355035,
+      "scalar_ms": 4.0801549,
+      "float32_ms": 5.78838985,
+      "speedup_vs_f32": 0.72
+    },
+    {
+      "case": "FFN gate/up 1.5B",
+      "matrix": "8960x1536",
+      "avx2_ms": 13.274755,
+      "scalar_ms": 12.025563,
+      "float32_ms": 17.6704915,
+      "speedup_vs_f32": 1.33
+    }
+  ],
+  "summary": {
+    "avg_speedup_vs_f32": 1.44,
+    "peak_speedup_vs_f32": 2.20,
+    "note": "Square attention matrices (2048x2048) show AVX2 regression due to 4-row tiling overhead"
+  }
+}

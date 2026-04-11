@@ -1,0 +1,23 @@
+{
+  "comparison": "Physics-as-Oracle vs LLM Oracle",
+  "task": "Generate 2,000 hydraulic engineering Q&A pairs",
+  "llm_oracle": {
+    "model": "Gemma 4 (shared server)",
+    "speed_tok_per_s": 1.22,
+    "timeout_rate_pct": 30,
+    "estimated_time_hours": 18,
+    "cost_usd": 15,
+    "verified": false,
+    "error_rate_pct": 30
+  },
+  "physics_oracle": {
+    "method": "Deterministic equations",
+    "equations": ["Manning", "Darcy-Weisbach", "Colebrook-White (Newton-Raphson)", "Bernoulli", "Joukowsky", "Hazen-Williams", "Continuidad"],
+    "time_seconds": 8.3,
+    "cost_usd": 0.0,
+    "verified": true,
+    "error_rate_pct": 0
+  },
+  "speedup": "~8000x",
+  "cost_reduction": "100%"
+}

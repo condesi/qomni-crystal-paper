@@ -1,0 +1,44 @@
+{
+  "date": "2026-04-11",
+  "domain": "hidraulica",
+  "model_base": "Qwen/Qwen2.5-0.5B-Instruct",
+  "training": {
+    "dataset_pairs": 2000,
+    "generation_time_seconds": 8.3,
+    "generation_cost_usd": 0.0,
+    "generator": "Physics-as-Oracle (Manning, Darcy-Weisbach, Bernoulli, Joukowsky, Hazen-Williams, Continuidad)",
+    "cities_covered": ["Lima", "Arequipa", "Cusco", "Puno", "Huancayo", "Trujillo", "Chiclayo", "Piura", "Ayacucho"],
+    "standards": ["IS.010", "IS.020", "RNE"],
+    "train_split": 1800,
+    "eval_split": 200,
+    "epochs": 3,
+    "batch_effective": 16,
+    "steps": 337,
+    "gpu": "Tesla T4 (Google Colab free tier)",
+    "training_time_minutes": 40
+  },
+  "quantization": {
+    "method": "AbsMean (BitNet b1.58)",
+    "bits_per_weight": 2,
+    "values": [-1, 0, 1],
+    "packing": "4 weights/byte, MSB-first"
+  },
+  "crystal": {
+    "magic": "CRYS",
+    "version": 1,
+    "layers": 168,
+    "arch": "bitnet-hidraulica",
+    "size_mb": 85.3,
+    "bf16_size_mb": 942.0,
+    "compression_ratio": 11.04,
+    "path_server5": "/opt/nexus/crystals/hidraulica.crystal",
+    "load_method": "mmap demand-paging",
+    "hot_swap_latency_ms": 0
+  },
+  "deployment": {
+    "server": "Server5 (vmi3206874)",
+    "endpoint": "http://109.123.245.234:8090/qomni/crystal",
+    "status": "active",
+    "registered": "2026-04-11T19:07:00Z"
+  }
+}
