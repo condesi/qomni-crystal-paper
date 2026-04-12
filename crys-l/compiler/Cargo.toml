@@ -1,0 +1,18 @@
+[package]
+name    = "crysl"
+version = "0.1.0"
+edition = "2021"
+description = "CRYS-L compiler — Crystal Language for ternary AI inference"
+authors = ["Percy Rojas Masgo <percy@condesi.pe>"]
+license = "Apache-2.0"
+
+[[bin]]
+name = "crysl"
+path = "src/main.rs"
+
+[lib]
+name = "crysl_lib"
+path = "src/lib.rs"
+
+[dependencies]
+# no external deps — pure Rust stdlib for portability
