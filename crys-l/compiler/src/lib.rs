@@ -4,3 +4,4 @@ pub mod parser;
 pub mod typeck;
 pub mod vm;
 pub mod repl;
+pub mod server;

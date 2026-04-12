@@ -13,6 +13,7 @@ mod parser;
 mod typeck;
 mod vm;
 mod repl;
+mod server;
 
 use lexer::Lexer;
 use parser::Parser;
@@ -78,8 +79,23 @@ fn main() {
             }
         }
 
+        Some("serve") => {
+            // crysl serve <file.crys> [port]
+            let path = args.get(2).expect("Usage: crysl serve <file.crys> [port]");
+            let port: u16 = args.get(3).and_then(|p| p.parse().ok()).unwrap_or(9000);
+            let src  = std::fs::read_to_string(path)
+                .unwrap_or_else(|e| { eprintln!("Error: {}", e); std::process::exit(1) });
+            let prog   = compile(&src);
+            let config = vm::QomniConfig::default();
+            let mut vm_inst = vm::Vm::new(config);
+            let _ = vm_inst.run(&prog);
+            println!("  CRYS-L serve: loading '{}'", path);
+            let srv = server::CrysServer::new(vm_inst, prog, port);
+            srv.run();
+        }
+
         Some(cmd) => {
-            eprintln!("Unknown command: '{}'. Use: repl | run | check | lex | eval", cmd);
+            eprintln!("Unknown command: '{}'. Use: repl | run | check | lex | eval | serve", cmd);
             std::process::exit(1);
         }
     }

@@ -181,11 +181,17 @@ impl Parser {
     }
 
     // ── Schedule declaration ───────────────────────────────────────
-    // schedule expr:
+    // schedule expr:  OR  schedule *:
     //     if cond: @hint
     fn parse_schedule(&mut self) -> Result<ScheduleDecl, String> {
         self.advance(); // 'schedule'
-        let expr = self.parse_expr()?;
+        // Allow wildcard `*` as schedule target meaning "all expressions"
+        let expr = if matches!(self.peek(), Token::Star) {
+            self.advance();
+            Expr::Ident("*".into())
+        } else {
+            self.parse_expr()?
+        };
         self.expect(&Token::Colon)?;
         self.skip_newlines();
         self.expect(&Token::Indent)?;
