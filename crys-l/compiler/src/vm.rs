@@ -213,10 +213,10 @@ impl Vm {
             Expr::Encode(e, dim) => {
                 let v = self.eval_expr(e)?;
                 let d = dim.unwrap_or(4864);
-                let scalar = match v {
-                    Val::Float(f) => f,
+                let scalar: f32 = match v {
+                    Val::Float(f) => f as f32,
                     Val::Int(n)   => n as f32,
-                    _             => 0.0,
+                    _             => 0.0f32,
                 };
                 let fvec: Vec<f32> = (0..d)
                     .map(|i| (scalar * (i as f32 * 0.001 + 1.0)).sin())

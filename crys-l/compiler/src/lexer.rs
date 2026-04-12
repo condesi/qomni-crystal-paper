@@ -179,7 +179,7 @@ impl Lexer {
 
     fn read_ident(&mut self, first: char) -> Token {
         let mut s = String::from(first);
-        while self.peek().map_or(false, |c| c.is_alphanumeric() || *c == '_') {
+        while self.peek().map_or(false, |c| c.is_alphanumeric() || c == '_') {
             s.push(self.advance().unwrap());
         }
         match s.as_str() {
@@ -309,7 +309,7 @@ impl Lexer {
                 '@' => {
                     // hardware hints
                     let mut kw = String::new();
-                    while self.peek().map_or(false, |c| c.is_alphanumeric() || *c == '_') {
+                    while self.peek().map_or(false, |c| c.is_alphanumeric() || c == '_') {
                         kw.push(self.advance().unwrap());
                     }
                     let tok = match kw.as_str() {

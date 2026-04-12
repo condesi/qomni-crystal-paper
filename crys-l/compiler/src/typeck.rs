@@ -181,7 +181,8 @@ impl TypeEnv {
             Expr::Encode(_, dim) => Ok(Type::Tvec(dim.unwrap_or(4864))),
             Expr::Quantize(e)    => {
                 match self.infer_expr(e)? {
-                    Type::Tmat(r,c) | Type::Tensor(_,_) => Ok(Type::Tmat(r, c)),
+                    Type::Tmat(r,c) => Ok(Type::Tmat(r, c)),
+                    Type::Tensor(_,_) => Ok(Type::Tmat(896, 4864)),
                     _ => Ok(Type::Tmat(896, 4864)),
                 }
             }
