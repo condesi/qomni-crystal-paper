@@ -1,26 +1,52 @@
-# Qomni Crystal — QOMN v3.2: Deterministic Engineering Oracle Engine
+# QOMN v3.2 — Physics Compiled to Machine Code
 
-**Compiled DSL for physics-exact, bit-deterministic multi-domain engineering computation**
+**56 engineering formulas. Zero variance. 9µs latency. Verify with curl.**
 
 [![Live Demo](https://img.shields.io/badge/demo-live-00e5ff)](https://qomni.clanmarketer.com/qomn/)
-[![Benchmarks](https://img.shields.io/badge/benchmarks-live-e040fb)](https://qomni.clanmarketer.com/qomn/demo/benchmark.html)
+[![Benchmarks](https://img.shields.io/badge/benchmarks-live-e040fb)](https://desarrollador.xyz/benchmark.html)
 [![Tests](https://img.shields.io/badge/tests-5%20suites-green)](https://github.com/condesi/qomn/tree/main/tests)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![arXiv](https://img.shields.io/badge/arXiv-preprint-red)](arxiv/main.tex)
 
-> **Percy Rojas Masgo** · CEO Condesi Perú · Qomni AI Lab
-> percy.rojas@condesi.pe · https://qomni.clanmarketer.com/qomn/
+QOMN compiles physics and engineering formulas directly to Cranelift JIT + AVX2 machine code. No neural network, no approximation, no randomness — **same input always produces the same bits**.
+
+```bash
+# Verify determinism yourself — run it 10 times, compare:
+for i in {1..10}; do
+  curl -s -X POST https://qomni.clanmarketer.com/qomn/api/plan/execute \
+    -H "Content-Type: application/json" \
+    -d '{"plan":"plan_pump_sizing","params":{"Q_gpm":500,"P_psi":100,"eff":0.75}}' \
+    | python3 -c "import sys,json; print(json.load(sys.stdin)['result']['nfpa20_pump_hp'])"
+done
+# 16.835016... × 10  ← bit-exact every time
+```
+
+> **Percy Rojas Masgo** · CEO Condesi Perú · Qomni AI Lab · percy.rojas@condesi.pe
 
 ---
 
-## What Changed (April 2026)
+## Why Not Just Use an LLM?
 
-This repository documents **QOMN v3.2**, a major evolution from the ternary quantization pipeline described in the original preprint. The core insight shifted:
+| | GPT-4 / LLM | QOMN |
+|---|---|---|
+| Same answer twice? | No (stochastic) | **Yes (bit-exact)** |
+| Latency | ~800ms | **9µs** |
+| Can hallucinate values? | Yes | **No (closed-form math)** |
+| Works offline/edge? | No | **Yes (.wasm output)** |
+| Auditable by regulators? | Hard | **Yes (open .qomn source)** |
 
-> **Original (v1):** Use physics to generate training data for compressed neural networks.
-> **Current (v3.2):** Skip the neural network entirely. Compile physics directly to JIT-optimized machine code.
+For critical systems (fire safety, structural loads, clinical dosing) you need the same answer every time. QOMN gives you that.
 
-The ternary quantization approach achieved 11× compression but retained LLM-style stochastic inference. QOMN v3.2 eliminates stochasticity entirely: **same input → same output, bit-exact, always**.
+---
+
+## The Core Idea
+
+> **Skip the neural network. Compile physics directly.**
+
+Standard approach: physics → training data → compressed NN → stochastic inference.
+QOMN approach: physics → `.qomn` source → Cranelift JIT → deterministic machine code.
+
+No weights. No approximation. No variance.
 
 ---
 
