@@ -54,7 +54,7 @@ No weights. No approximation. No variance.
 
 | Metric | Value | Verification |
 |--------|-------|-------------|
-| Compute throughput (JIT) | **117,000,000 ops/s** | [/simulation/simd_density](https://qomni.clanmarketer.com/qomn/api/simulation/simd_density) |
+| Compute throughput (JIT) | **101,000,000 ops/s** | [/simulation/simd_density](https://qomni.clanmarketer.com/qomn/api/simulation/simd_density) |
 | Compute throughput (AVX2 sweep) | **3,500,000,000 ops/s** | [benchmark dashboard](https://qomni.clanmarketer.com/qomn/demo/benchmark.html) |
 | Compute latency p50 | **9µs** | `total_ns` field in API response |
 | Compute latency p99 | **21µs** | `tests/slo_latency.rs` |
