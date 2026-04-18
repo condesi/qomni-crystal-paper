@@ -1,4 +1,4 @@
-# CRYS-L Example — Tipos Ternarios Nativos
+# QOMN Example — Tipos Ternarios Nativos
 # Demuestra trit, tvec, tmat como primitivas del lenguaje
 # Qomni AI Lab · Condesi Perú · 2026
 
@@ -11,7 +11,7 @@ let c: trit = -1
 let v8: tvec[8] = tvec[+1, 0t, -1, +1, -1, 0t, 0t, +1]
 
 # Cuantizar un vector f32 a ternario (BitNet absmean)
-crystal hidraulica = load @mmap "hidraulica.crystal"
+crystal hidraulica = load @mmap "hidraulica.qomntal"
 let W_f32 = hidraulica.layer(0)          # extrae capa 0 como f32
 let W: tmat[896][4864] = quantize(W_f32) # cuantiza a ternario
 

@@ -1,13 +1,13 @@
-# CRYS-L Language Guide
-**Crystal Language — Guía Completa**
+# QOMN Language Guide
+**QOMN Language — Guía Completa**
 Qomni AI Lab · Condesi Perú · 2026
 
 ---
 
-## ¿Qué es CRYS-L?
+## ¿Qué es QOMN?
 
-CRYS-L es el primer lenguaje de programación con **tipos ternarios nativos**.
-Diseñado para orquestar modelos de IA comprimidos en formato `.crystal`
+QOMN es el primer lenguaje de programación con **tipos ternarios nativos**.
+Diseñado para orquestar modelos de IA comprimidos en formato `.qomntal`
 (BitNet b1.58, pesos `{-1, 0, +1}`), calcular con oráculos físicos deterministas,
 y enrutar consultas a través de pipelines multi-dominio.
 
@@ -20,13 +20,13 @@ y enrutar consultas a través de pipelines multi-dominio.
 ```bash
 # Clonar el repo
 git clone https://github.com/condesi/qomni-crystal-paper
-cd qomni-crystal-paper/crys-l/compiler
+cd qomni-crystal-paper/qomn/compiler
 
 # Compilar (requiere Rust 1.70+)
 cargo build --release
 
 # El binario queda en:
-./target/release/crysl
+./target/release/qomn
 ```
 
 ---
@@ -34,11 +34,11 @@ cargo build --release
 ## Comandos del CLI
 
 ```bash
-crysl                          # Inicia el REPL interactivo
-crysl run   programa.crys      # Ejecuta un programa
-crysl check programa.crys      # Solo verifica tipos
-crysl lex   programa.crys      # Muestra tokens (debug)
-crysl eval  "let x = 1+2"      # Evalúa una expresión
+qomn                          # Inicia el REPL interactivo
+qomn run   programa.qomn      # Ejecuta un programa
+qomn check programa.qomn      # Solo verifica tipos
+qomn lex   programa.qomn      # Muestra tokens (debug)
+qomn eval  "let x = 1+2"      # Evalúa una expresión
 ```
 
 ---
@@ -46,10 +46,10 @@ crysl eval  "let x = 1+2"      # Evalúa una expresión
 ## El REPL
 
 ```
-$ crysl
+$ qomn
 
   ╔═══════════════════════════════════════════════════╗
-  ║   CRYS-L v1.0  — Crystal Language REPL           ║
+  ║   QOMN v1.0  — QOMN Language REPL           ║
   ╚═══════════════════════════════════════════════════╝
 
 crys> let x = 1.5 + 2.0
@@ -74,7 +74,7 @@ Comandos especiales del REPL:
 | `:quit` / `:q` | Sale |
 | `:crystals` | Lista crystals cargados |
 | `:routes` | Muestra la tabla de rutas |
-| `:load archivo.crys` | Carga y ejecuta un archivo |
+| `:load archivo.qomn` | Carga y ejecuta un archivo |
 | `:query texto` | Enruta un texto por el router |
 
 ---
@@ -91,7 +91,7 @@ let e: bool = true
 let s: str  = "hola"
 ```
 
-### Tipos ternarios (únicos en CRYS-L)
+### Tipos ternarios (únicos en QOMN)
 ```crys
 # Un solo trit
 let t: trit = +1     # valores posibles: +1, 0t, -1
@@ -136,15 +136,15 @@ let igv_monto = igv(50000.0)          # = 9000.0
 
 ## Crystals
 
-Un crystal es un modelo de IA comprimido (formato `.crystal`, BitNet b1.58).
+Un crystal es un modelo de IA comprimido (formato `.qomntal`, BitNet b1.58).
 
 ```crys
 # Cargar con demand-paging (0ms swap)
-crystal hidraulica   = load @mmap "hidraulica.crystal"
-crystal contabilidad = load @mmap "contabilidad.crystal"
-crystal legal_peru   = load @mmap "legal_peru.crystal"
-crystal nfpa         = load @mmap "nfpa_electrico.crystal"
-crystal general      = load @mmap "general.crystal"
+crystal hidraulica   = load @mmap "hidraulica.qomntal"
+crystal contabilidad = load @mmap "contabilidad.qomntal"
+crystal legal_peru   = load @mmap "legal_peru.qomntal"
+crystal nfpa         = load @mmap "nfpa_electrico.qomntal"
+crystal general      = load @mmap "general.qomntal"
 
 # Inferencia: extraer activaciones de una capa
 let x = encode(42.5, 4864)                       # codifica valor → vector 4864-dim
@@ -201,7 +201,7 @@ pipe analisis_ci(Q_gpm: f32, P_psi: f32):
 
 ## Routing
 
-El sistema de routing dirige consultas al crystal/oráculo/pipe correcto.
+El sistema de routing dirige consultas al qomn/oráculo/pipe correcto.
 
 ```crys
 # Patrones exactos (con prefijo)
@@ -239,7 +239,7 @@ schedule hidraulica.infer(x=v):
 ## Ejemplo Completo — Sistema Multi-Dominio
 
 ```crys
-# archivo: sistema.crys
+# archivo: sistema.qomn
 
 # Oráculos físicos
 oracle igv(base: f32) -> f32:
@@ -252,11 +252,11 @@ oracle bomba_ci(Q_gpm: f32, P_psi: f32) -> f32:
     return Q_gpm * P_psi / 2772.0
 
 # Crystals
-crystal hidraulica   = load @mmap "/opt/nexus/crystals/hidraulica.crystal"
-crystal contabilidad = load @mmap "/opt/nexus/crystals/contabilidad.crystal"
-crystal legal_peru   = load @mmap "/opt/nexus/crystals/legal_peru.crystal"
-crystal nfpa         = load @mmap "/opt/nexus/crystals/nfpa_electrico.crystal"
-crystal general      = load @mmap "/opt/nexus/crystals/general.crystal"
+crystal hidraulica   = load @mmap "/opt/nexus/crystals/hidraulica.qomntal"
+crystal contabilidad = load @mmap "/opt/nexus/crystals/contabilidad.qomntal"
+crystal legal_peru   = load @mmap "/opt/nexus/crystals/legal_peru.qomntal"
+crystal nfpa         = load @mmap "/opt/nexus/crystals/nfpa_electrico.qomntal"
+crystal general      = load @mmap "/opt/nexus/crystals/general.qomntal"
 
 # Pipelines
 pipe consulta_hidro(n: f32, R: f32, S: f32):
@@ -289,8 +289,8 @@ schedule *.infer(x=v):
 
 Ejecutar:
 ```bash
-crysl run sistema.crys
-# crystal 'hidraulica' registered from '/opt/nexus/crystals/hidraulica.crystal'
+qomn run sistema.qomn
+# crystal 'hidraulica' registered from '/opt/nexus/crystals/hidraulica.qomntal'
 # crystal 'contabilidad' registered ...
 # ...
 ```
@@ -322,20 +322,20 @@ Ver spec completa: [`SPEC.md`](SPEC.md)
 
 ## Integración con Qomni
 
-CRYS-L se conecta al servidor Qomni via HTTP:
+QOMN se conecta al servidor Qomni via HTTP:
 
 ```bash
 # Variables de entorno
-export QOMNI_URL="http://109.123.245.234:8090"
+export QOMNI_URL="http://qomni.clanmarketer.com:8090"
 export QOMNI_KEY="tu-api-key"
 
-crysl run programa.crys
+qomn run programa.qomn
 ```
 
 Endpoints usados:
-- `POST /qomni/crystal/register` — registrar crystal
-- `POST /qomni/crystal/activate` — activar (0ms swap)
-- `POST /qomni/crystal/infer` — inferencia por capa
+- `POST /qomni/qomn/register` — registrar crystal
+- `POST /qomni/qomn/activate` — activar (0ms swap)
+- `POST /qomni/qomn/infer` — inferencia por capa
 
 ---
 
@@ -349,11 +349,11 @@ Endpoints usados:
 | v0.4 | Type checker ternario | ✓ |
 | v0.5 | VM tree-walking | ✓ |
 | v1.0 | REPL + CLI completo | ✓ |
-| v1.1 | Compilador oracle → .crystal | Planeado |
+| v1.1 | Compilador oracle → .qomntal | Planeado |
 | v1.2 | Bytecode IR + optimizer | Planeado |
 | v2.0 | Backend NÚCLEO Q-1 | Research |
 
 ---
 
-*CRYS-L — Apache 2.0 — Qomni AI Lab, Condesi Perú*
+*QOMN — Apache 2.0 — Qomni AI Lab, Condesi Perú*
 *https://github.com/condesi/qomni-crystal-paper*

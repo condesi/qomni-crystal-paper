@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════════
-// CRYS-L v1.0 — REPL (Read-Eval-Print Loop)
-// Interactive shell for CRYS-L programs.
+// QOMN v1.0 — REPL (Read-Eval-Print Loop)
+// Interactive shell for QOMN programs.
 // ═══════════════════════════════════════════════════════════════════════
 
 use std::io::{self, BufRead, Write};
@@ -11,7 +11,7 @@ use crate::vm::{Vm, QomniConfig};
 
 const BANNER: &str = r#"
   ╔═══════════════════════════════════════════════════╗
-  ║   CRYS-L v1.0  — Crystal Language REPL           ║
+  ║   QOMN v1.0  — QOMN Language REPL           ║
   ║   Qomni AI Lab · Condesi Perú · 2026             ║
   ║                                                   ║
   ║   Tipos: trit  tvec[n]  tmat[r][c]               ║
@@ -20,19 +20,19 @@ const BANNER: &str = r#"
 "#;
 
 const HELP: &str = r#"
-CRYS-L REPL Commands:
+QOMN REPL Commands:
   :help              this help
   :quit / :q         exit
   :crystals          list registered crystals
   :routes            list route table
-  :load <file>       load and execute a .crys file
+  :load <file>       load and execute a .qomn file
   :query <text>      route text through crystal router
 
-CRYS-L Syntax Quick Reference:
+QOMN Syntax Quick Reference:
   oracle f(x: f32) -> f32:      define physics oracle
       return x * 0.18
 
-  crystal c = load @mmap "c.crystal"   load crystal
+  crystal c = load @mmap "c.qomntal"   load crystal
   pipe p(x: f32):               define pipeline
       v = encode(x, 4864)
       -> respond(c.infer(x=v))
@@ -47,7 +47,7 @@ pub fn run_repl(qomni_url: Option<String>, qomni_key: Option<String>) {
     println!("{}", BANNER);
 
     let config = QomniConfig {
-        base_url: qomni_url.unwrap_or_else(|| "http://109.123.245.234:8090".into()),
+        base_url: qomni_url.unwrap_or_else(|| "http://qomni.clanmarketer.com:8090".into()),
         api_key:  qomni_key.unwrap_or_else(|| "adesur-whatsapp-2026-secret".into()),
     };
 

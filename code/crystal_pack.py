@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 """
-crystal_pack.py — Qomni BitNet Crystal Packer
+qomn_pack.py — Qomni BitNet Crystal Packer
 ==============================================
-Convierte pesos entrenados (BF16/FP16 .safetensors) al formato binario .crystal
+Convierte pesos entrenados (BF16/FP16 .safetensors) al formato binario .qomntal
 usando quantización absmean BitNet b1.58: {-1, 0, +1} empaquetados a 2 bits/peso.
 
 Uso:
-    python3 crystal_pack.py \
+    python3 qomn_pack.py \
         --input model.safetensors \
-        --output hidraulica.crystal \
+        --output hidraulica.qomntal \
         --arch bitnet-500m \
         --domain hidraulica
 
-    python3 crystal_pack.py --input ./lora_output/ --output hidraulica.crystal
+    python3 qomn_pack.py --input ./lora_output/ --output hidraulica.qomntal
 
-Formato .crystal (binario little-endian):
+Formato .qomntal (binario little-endian):
     [0:4]   magic       b"CRYS"
     [4:6]   version     u16 = 1
     [6:8]   n_layers    u16
@@ -58,7 +58,7 @@ except ImportError:
     HAS_SAFETENSORS = False
     print("AVISO: safetensors no instalado — pip install safetensors")
 
-# ── Constantes formato .crystal ───────────────────────────────────────────────
+# ── Constantes formato .qomntal ───────────────────────────────────────────────
 CRYSTAL_MAGIC   = b"CRYS"
 CRYSTAL_VERSION = 1
 HEADER_SIZE     = 64
@@ -169,7 +169,7 @@ def filter_layers(tensors: dict, patterns: list[str]) -> dict:
             filtered[name] = t
     return filtered
 
-# ── Escritura del archivo .crystal ────────────────────────────────────────────
+# ── Escritura del archivo .qomntal ────────────────────────────────────────────
 
 def write_crystal(
     output_path: str,
@@ -178,7 +178,7 @@ def write_crystal(
     verbose: bool = True,
 ):
     """
-    Escribe el archivo binario .crystal.
+    Escribe el archivo binario .qomntal.
     layers: lista ordenada de (nombre, tensor BF16/FP16)
     """
     n_layers = len(layers)
@@ -381,11 +381,11 @@ def diagnose_model(path: str):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Empaqueta pesos BitNet b1.58 al formato .crystal")
+        description="Empaqueta pesos BitNet b1.58 al formato .qomntal")
     parser.add_argument("--input",    required=True,
                         help="Ruta al modelo: .safetensors o directorio HF")
     parser.add_argument("--output",   default=None,
-                        help="Ruta de salida .crystal (default: <input>.crystal)")
+                        help="Ruta de salida .qomntal (default: <input>.qomntal)")
     parser.add_argument("--arch",     default="bitnet-500m",
                         help="Nombre de arquitectura (metadata)")
     parser.add_argument("--domain",   default="",
@@ -405,7 +405,7 @@ def main():
     # Determinar output path
     if args.output is None:
         base = Path(args.input).stem if Path(args.input).is_file() else Path(args.input).name
-        args.output = f"{base}.crystal"
+        args.output = f"{base}.qomntal"
 
     # Cargar modelo
     tensors, config = load_model(args.input)

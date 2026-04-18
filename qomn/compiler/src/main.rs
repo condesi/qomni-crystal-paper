@@ -1,10 +1,10 @@
 // ═══════════════════════════════════════════════════════════════════════
-// CRYS-L v1.0 — Main entry point
+// QOMN v1.0 — Main entry point
 // Usage:
-//   crysl                       start REPL
-//   crysl run <file.crys>       execute a program
-//   crysl check <file.crys>     type-check only
-//   crysl lex <file.crys>       dump tokens (debug)
+//   qomn                       start REPL
+//   qomn run <file.qomn>       execute a program
+//   qomn check <file.qomn>     type-check only
+//   qomn lex <file.qomn>       dump tokens (debug)
 // ═══════════════════════════════════════════════════════════════════════
 
 mod lexer;
@@ -14,7 +14,7 @@ mod typeck;
 mod vm;
 mod repl;
 mod server;
-mod crystal_compiler;
+mod qomn_compiler;
 
 use lexer::Lexer;
 use parser::Parser;
@@ -30,7 +30,7 @@ fn main() {
         }
 
         Some("run") => {
-            let path = args.get(2).expect("Usage: crysl run <file.crys>");
+            let path = args.get(2).expect("Usage: qomn run <file.qomn>");
             let src  = std::fs::read_to_string(path)
                 .unwrap_or_else(|e| { eprintln!("Error: {}", e); std::process::exit(1) });
 
@@ -44,7 +44,7 @@ fn main() {
         }
 
         Some("check") => {
-            let path = args.get(2).expect("Usage: crysl check <file.crys>");
+            let path = args.get(2).expect("Usage: qomn check <file.qomn>");
             let src  = std::fs::read_to_string(path)
                 .unwrap_or_else(|e| { eprintln!("Error: {}", e); std::process::exit(1) });
 
@@ -60,7 +60,7 @@ fn main() {
         }
 
         Some("lex") => {
-            let path = args.get(2).expect("Usage: crysl lex <file.crys>");
+            let path = args.get(2).expect("Usage: qomn lex <file.qomn>");
             let src  = std::fs::read_to_string(path)
                 .unwrap_or_else(|e| { eprintln!("Error: {}", e); std::process::exit(1) });
             let mut lexer = Lexer::new(&src);
@@ -70,8 +70,8 @@ fn main() {
         }
 
         Some("eval") => {
-            // eval inline expression: crysl eval "let x = 1.0 + 2.0"
-            let src = args.get(2).expect("Usage: crysl eval <expr>");
+            // eval inline expression: qomn eval "let x = 1.0 + 2.0"
+            let src = args.get(2).expect("Usage: qomn eval <expr>");
             let prog = compile(src);
             let mut vm = Vm::new(QomniConfig::default());
             match vm.run(&prog) {
@@ -81,20 +81,20 @@ fn main() {
         }
 
         Some("compile") => {
-            // crysl compile <file.crys> [out_dir]
-            // Compiles all oracle declarations to .crystal files
-            let path    = args.get(2).expect("Usage: crysl compile <file.crys> [out_dir]");
+            // qomn compile <file.qomn> [out_dir]
+            // Compiles all oracle declarations to .qomntal files
+            let path    = args.get(2).expect("Usage: qomn compile <file.qomn> [out_dir]");
             let out_dir = args.get(3).map(|s| s.as_str()).unwrap_or(".");
             let src     = std::fs::read_to_string(path)
                 .unwrap_or_else(|e| { eprintln!("Error: {}", e); std::process::exit(1) });
             let prog = compile(&src);
 
-            println!("CRYS-L Compiler — oracle → .crystal");
+            println!("QOMN Compiler — oracle → .qomntal");
             println!("Input:   {}", path);
             println!("Out dir: {}", out_dir);
             println!();
 
-            let results = crystal_compiler::compile_oracles(&prog, out_dir);
+            let results = qomn_compiler::compile_oracles(&prog, out_dir);
             if results.is_empty() {
                 println!("No oracle declarations found in '{}'.", path);
                 std::process::exit(0);
@@ -113,12 +113,12 @@ fn main() {
                 }
             }
             println!();
-            println!("{} oracle(s) compiled to .crystal", ok);
+            println!("{} oracle(s) compiled to .qomntal", ok);
         }
 
         Some("serve") => {
-            // crysl serve <file.crys> [port]
-            let path = args.get(2).expect("Usage: crysl serve <file.crys> [port]");
+            // qomn serve <file.qomn> [port]
+            let path = args.get(2).expect("Usage: qomn serve <file.qomn> [port]");
             let port: u16 = args.get(3).and_then(|p| p.parse().ok()).unwrap_or(9000);
             let src  = std::fs::read_to_string(path)
                 .unwrap_or_else(|e| { eprintln!("Error: {}", e); std::process::exit(1) });
@@ -126,7 +126,7 @@ fn main() {
             let config = vm::QomniConfig::default();
             let mut vm_inst = vm::Vm::new(config);
             let _ = vm_inst.run(&prog);
-            println!("  CRYS-L serve: loading '{}'", path);
+            println!("  QOMN serve: loading '{}'", path);
             let srv = server::CrysServer::new(vm_inst, prog, port);
             srv.run();
         }

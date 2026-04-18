@@ -1,17 +1,17 @@
 [package]
-name    = "crysl"
+name    = "qomn"
 version = "0.1.0"
 edition = "2021"
-description = "CRYS-L compiler — Crystal Language for ternary AI inference"
+description = "QOMN compiler — QOMN Language for ternary AI inference"
 authors = ["Percy Rojas Masgo <percy@condesi.pe>"]
 license = "Apache-2.0"
 
 [[bin]]
-name = "crysl"
+name = "qomn"
 path = "src/main.rs"
 
 [lib]
-name = "crysl_lib"
+name = "qomn_lib"
 path = "src/lib.rs"
 
 [dependencies]

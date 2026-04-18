@@ -1,16 +1,16 @@
-# CRYS-L Language Specification v0.1
-**Crystal Language — Formal EBNF Grammar**
+# QOMN Language Specification v0.1
+**QOMN Language — Formal EBNF Grammar**
 Percy Rojas Masgo · Condesi Perú · Qomni AI Lab · 2026
 
 ---
 
 ## Abstract
 
-CRYS-L (Crystal Language) is a domain-specific language designed for
+QOMN (QOMN Language) is a domain-specific language designed for
 ternary-native AI inference pipelines. It is the first language to treat
 ternary types `{-1, 0, +1}` as first-class primitives, enabling direct
 expression of BitNet b1.58 weight matrices without emulation overhead.
-CRYS-L compiles to Qomni bytecode and targets the Crystal kernel AVX2
+QOMN compiles to Qomni bytecode and targets the Crystal kernel AVX2
 executor on commodity hardware.
 
 ---
@@ -20,7 +20,7 @@ executor on commodity hardware.
 1. **Ternary-native**: `trit`, `tvec[n]`, `tmat[r][c]` are primitive types
 2. **Oracle-first**: physical equations are language constructs, not libraries
 3. **Hardware-aware**: scheduling hints are declarative, not imperative
-4. **Crystal-centric**: `.crystal` files are first-class values
+4. **Crystal-centric**: `.qomntal` files are first-class values
 5. **No magic**: every construct maps to a concrete Qomni operation
 
 ---
@@ -29,7 +29,7 @@ executor on commodity hardware.
 
 ```ebnf
 (* ═══════════════════════════════════════════════════════════════
-   CRYS-L v0.1 — Complete EBNF
+   QOMN v0.1 — Complete EBNF
    Notation: ::= definition | alternative, [] optional, {} repeat
    ═══════════════════════════════════════════════════════════════ *)
 
@@ -218,10 +218,10 @@ oracle darcy_weisbach(f: f32, L: f32, D: f32, V: f32) -> f32:
 
 ### 3.2 Crystal loading con hardware hint
 ```crys
-crystal hidraulica   = load @mmap "hidraulica.crystal"
-crystal contabilidad = load @mmap "contabilidad.crystal"
-crystal legal_peru   = load @mmap "legal_peru.crystal"
-crystal nfpa         = load @mmap "nfpa_electrico.crystal"
+crystal hidraulica   = load @mmap "hidraulica.qomntal"
+crystal contabilidad = load @mmap "contabilidad.qomntal"
+crystal legal_peru   = load @mmap "legal_peru.qomntal"
+crystal nfpa         = load @mmap "nfpa_electrico.qomntal"
 ```
 
 ### 3.3 Pipeline multi-crystal
@@ -277,14 +277,14 @@ let y: tvec[896] = W * v
 |--------|-------------|--------|
 | `qomni-bytecode` | Qomni internal IR, executes on Server5 | Planned v1 |
 | `rust-ffi` | Generates Rust bindings for crystal_kernel.rs | Planned v1 |
-| `crystal-pack` | Compiles oracle → `.crystal` binary format | Planned v2 |
+| `crystal-pack` | Compiles oracle → `.qomntal` binary format | Planned v2 |
 | `ternary-asm` | Native ternary assembly (future NÚCLEO Q-1) | Research |
 
 ---
 
 ## 5. Novelty Statement
 
-CRYS-L introduces three contributions not present in existing languages:
+QOMN introduces three contributions not present in existing languages:
 
 1. **Ternary primitive types** (`trit`, `tvec`, `tmat`) — no existing general-purpose
    language includes ternary as a native type. Python, Rust, C++ emulate it in binary.
@@ -293,7 +293,7 @@ CRYS-L introduces three contributions not present in existing languages:
    language constructs separate from functions. Enables Physics-as-Oracle (PaO)
    pattern at the language level.
 
-3. **Crystal references** — `.crystal` binary files (BitNet b1.58 compressed
+3. **Crystal references** — `.qomntal` binary files (BitNet b1.58 compressed
    weights) are first-class values with type-safe load, infer, and layer operations.
 
 ---
@@ -307,7 +307,7 @@ v0.3  Parser → AST
 v0.4  Type checker (ternary compatibility rules)
 v0.5  Bytecode emitter → Qomni executor
 v1.0  Full compiler + REPL
-v1.1  crystal-pack: oracle → .crystal compilation
+v1.1  crystal-pack: oracle → .qomntal compilation
 ```
 
 ---
@@ -322,4 +322,4 @@ v1.1  crystal-pack: oracle → .crystal compilation
 
 ---
 
-*CRYS-L is open source — Apache 2.0 — Qomni AI Lab, Condesi Perú*
+*QOMN is open source — Apache 2.0 — Qomni AI Lab, Condesi Perú*

@@ -1,15 +1,15 @@
 // ═══════════════════════════════════════════════════════════════════════
-// CRYS-L v1.2 — Oracle → .crystal Compiler
+// QOMN v1.2 — Oracle → .qomntal Compiler
 //
-// Compila declaraciones `oracle` de CRYS-L a formato binario .crystal
+// Compila declaraciones `oracle` de QOMN a formato binario .qomntal
 // usando Physics-as-Oracle (PaO): muestrea el oráculo en una grilla,
 // cuantiza las activaciones a ternario {-1,0,+1} (BitNet absmean),
 // y empaqueta en el formato CRYS binary.
 //
 // Flujo:
-//   oracle f(x) -> y  →  sample grid  →  quantize  →  .crystal
+//   oracle f(x) -> y  →  sample grid  →  quantize  →  .qomntal
 //
-// El .crystal resultante puede cargarse en Qomni como cualquier crystal
+// El .qomntal resultante puede cargarse en Qomni como cualquier crystal
 // entrenado con SFT — misma API, mismo formato.
 // ═══════════════════════════════════════════════════════════════════════
 
@@ -229,7 +229,7 @@ pub struct CompileResult {
     pub sparsity:    f32,  // fraction of zeros in ternary weights
 }
 
-/// Compile all oracle declarations in a program to .crystal files.
+/// Compile all oracle declarations in a program to .qomntal files.
 pub fn compile_oracles(prog: &Program, out_dir: &str) -> Vec<Result<CompileResult, String>> {
     let mut results = vec![];
 
@@ -242,7 +242,7 @@ pub fn compile_oracles(prog: &Program, out_dir: &str) -> Vec<Result<CompileResul
     results
 }
 
-/// Compile a single oracle to a .crystal file.
+/// Compile a single oracle to a .qomntal file.
 pub fn compile_oracle(oracle: &OracleDecl, out_dir: &str) -> Result<CompileResult, String> {
     let n_samples = ROWS * 4;  // 4 samples per output row for good coverage
 
@@ -256,8 +256,8 @@ pub fn compile_oracle(oracle: &OracleDecl, out_dir: &str) -> Result<CompileResul
     let zeros    = weights.iter().filter(|&&w| w == 0).count();
     let sparsity = zeros as f32 / weights.len() as f32;
 
-    // 4. Write .crystal
-    let out_path = format!("{}/{}.crystal", out_dir, oracle.name);
+    // 4. Write .qomntal
+    let out_path = format!("{}/{}.qomntal", out_dir, oracle.name);
     let file_size = write_crystal(&oracle.name, &weights, ROWS, COLS, &out_path)?;
 
     Ok(CompileResult {

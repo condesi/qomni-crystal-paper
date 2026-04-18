@@ -1,15 +1,15 @@
-# CRYS-L Example — Multi-Domain Router
+# QOMN Example — Multi-Domain Router
 # Carga 6 crystals, enruta automáticamente por patrón
 # Qomni AI Lab · Condesi Perú · 2026
 
 # ── Crystals ──────────────────────────────────────────────────
-crystal hidraulica    = load @mmap "hidraulica.crystal"
-crystal contabilidad  = load @mmap "contabilidad.crystal"
-crystal legal_peru    = load @mmap "legal_peru.crystal"
-crystal whatsapp      = load @mmap "whatsapp_ventas.crystal"
-crystal tecnico_it    = load @mmap "tecnico_it.crystal"
-crystal general       = load @mmap "general.crystal"
-crystal nfpa          = load @mmap "nfpa_electrico.crystal"
+crystal hidraulica    = load @mmap "hidraulica.qomntal"
+crystal contabilidad  = load @mmap "contabilidad.qomntal"
+crystal legal_peru    = load @mmap "legal_peru.qomntal"
+crystal whatsapp      = load @mmap "whatsapp_ventas.qomntal"
+crystal tecnico_it    = load @mmap "tecnico_it.qomntal"
+crystal general       = load @mmap "general.qomntal"
+crystal nfpa          = load @mmap "nfpa_electrico.qomntal"
 
 # ── Oracles ───────────────────────────────────────────────────
 oracle igv(base: f32) -> f32:

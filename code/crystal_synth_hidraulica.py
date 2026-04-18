@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-crystal_synth_hidraulica.py — Generador Físico-Determinista de Datos
+qomn_synth_hidraulica.py — Generador Físico-Determinista de Datos
 =====================================================================
 Genera pares Q&A de hidráulica usando ecuaciones físicas exactas,
 sin necesitar un LLM oracle. Precisión matemática garantizada.
@@ -537,7 +537,7 @@ def generate_dataset(n: int, output: str, seed: int = 42):
                 "system":      SYSTEM_PROMPT,
                 "metadata":    {
                     "domain":    "hidraulica",
-                    "source":    "crystal_synth_fisica",
+                    "source":    "qomn_synth_fisica",
                     "formula":   meta.get("formula", "?"),
                     "verified":  True,   # matemáticamente exacto
                     "idx":       i,

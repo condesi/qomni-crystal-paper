@@ -1,4 +1,4 @@
-# CRYS-L Example — Dominio Hidráulica
+# QOMN Example — Dominio Hidráulica
 # Qomni AI Lab · Condesi Perú · 2026
 
 # ── Oracles físicos (Physics-as-Oracle) ──────────────────────
@@ -16,7 +16,7 @@ oracle hazen_williams(C: f32, D: f32, S: f32) -> f32:
     return 0.2785 * C * D ^ 2.63 * S ^ 0.54
 
 # ── Crystal load ──────────────────────────────────────────────
-crystal hidraulica = load @mmap "hidraulica.crystal"
+crystal hidraulica = load @mmap "hidraulica.qomntal"
 
 # ── Pipeline ──────────────────────────────────────────────────
 pipe calc_manning(n: f32, R: f32, S: f32):

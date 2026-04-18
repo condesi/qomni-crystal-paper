@@ -31,13 +31,13 @@
     "size_mb": 85.3,
     "bf16_size_mb": 942.0,
     "compression_ratio": 11.04,
-    "path_server5": "/opt/nexus/crystals/hidraulica.crystal",
+    "path_server5": "/opt/nexus/crystals/hidraulica.qomntal",
     "load_method": "mmap demand-paging",
     "hot_swap_latency_ms": 0
   },
   "deployment": {
     "server": "Server5 (vmi3206874)",
-    "endpoint": "http://109.123.245.234:8090/qomni/crystal",
+    "endpoint": "http://qomni.clanmarketer.com:8090/qomni/crystal",
     "status": "active",
     "registered": "2026-04-11T19:07:00Z"
   }

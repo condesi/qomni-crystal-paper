@@ -30,14 +30,14 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}{Definition}
 
-\title{\textbf{Qomni + CRYS-L v3.2: A Hybrid Neuro-Symbolic Architecture\\
+\title{\textbf{Qomni + QOMN v3.2: A Hybrid Neuro-Symbolic Architecture\\
 for Deterministic Engineering Reasoning at 117M ops/s}}
 
 \author{
     Percy Rojas Masgo \\
     CEO, Condesi Per\'u $\cdot$ Qomni AI Lab \\
     \texttt{percy.rojas@condesi.pe} \\
-    \texttt{https://qomni.clanmarketer.com/crysl/}
+    \texttt{https://qomni.clanmarketer.com/qomn/}
 }
 
 \date{April 2026 \quad (Preprint)}
@@ -47,9 +47,9 @@ for Deterministic Engineering Reasoning at 117M ops/s}}
 
 \begin{abstract}
 We present \textbf{Qomni}, a hybrid neuro-symbolic AI system combining
-\textbf{CRYS-L v3.2} (a JIT-compiled deterministic oracle engine) with a
+\textbf{QOMN v3.2} (a JIT-compiled deterministic oracle engine) with a
 9-layer cognitive inference cascade (Qomni Engine v7.4, 207 features, 12 Rust modules).
-CRYS-L processes engineering calculations at \textbf{117 million operations per second}
+QOMN processes engineering calculations at \textbf{117 million operations per second}
 with compute latency $p_{50} = 9\,\mu$s and \textbf{zero numeric variance} across
 repeated executions---a 1.53 billion$\times$ throughput advantage over Python baselines
 and 88,888$\times$ faster than GPT-4 inference on deterministic tasks.
@@ -61,7 +61,7 @@ handles 100,000 adversarial inputs (NaN, $\pm\infty$, impossible negatives) with
 A Universal Intent Router (UIR) classifies 8 query types without LLM overhead,
 eliminating the architectural failure of meta-queries falling through to wrong engines.
 All results are live and reproducible at
-\url{https://qomni.clanmarketer.com/crysl/}.
+\url{https://qomni.clanmarketer.com/qomn/}.
 \end{abstract}
 
 \textbf{Keywords:} deterministic AI, JIT compilation, neuro-symbolic reasoning,
@@ -99,7 +99,7 @@ bit-exact results in microseconds.
 \subsection{Core Contributions}
 
 \begin{enumerate}
-\item \textbf{CRYS-L:} A compiled DSL for branchless engineering oracles,
+\item \textbf{QOMN:} A compiled DSL for branchless engineering oracles,
       targeting Cranelift JIT, LLVM 18, and WebAssembly.
 \item \textbf{Universal Intent Router:} Keyword classifier routing 8 query
       classes at zero LLM cost.
@@ -113,17 +113,17 @@ bit-exact results in microseconds.
 \end{enumerate}
 
 %─────────────────────────────────────────────────────────────────────────────
-\section{CRYS-L: The Deterministic Compute Substrate}
+\section{QOMN: The Deterministic Compute Substrate}
 %─────────────────────────────────────────────────────────────────────────────
 
 \subsection{Language Design}
 
-CRYS-L (Crystal Language) is a purely functional DSL for engineering computation.
+QOMN (QOMN Language) is a purely functional DSL for engineering computation.
 Its central design choice is the \textbf{branchless oracle pattern}:
 comparisons return \texttt{float} (0.0 or 1.0), enabling physics validation
 without branch instructions:
 
-\begin{lstlisting}[caption={NFPA 20 fire pump oracle in CRYS-L}]
+\begin{lstlisting}[caption={NFPA 20 fire pump oracle in QOMN}]
 oracle nfpa20_pump_hp(flow_gpm: float, head_psi: float, eff: float) -> float:
     # Branchless guard: all invalid inputs → 0.0 (no branch, no exception)
     let valid = (flow_gpm >= 1.0) * (flow_gpm <= 50000.0) * (eff >= 0.10)
@@ -140,7 +140,7 @@ before memory bandwidth limits.
 \subsection{Compilation Pipeline}
 
 \begin{equation}
-\text{.crys} \xrightarrow{\text{Lexer+Parser}} \text{AST}
+\text{.qomn} \xrightarrow{\text{Lexer+Parser}} \text{AST}
              \xrightarrow{\text{HIR}} \text{Type check}
              \xrightarrow{\text{Backend}} \begin{cases}
                \text{Cranelift JIT} & \text{(default, sub-ms startup)} \\
@@ -168,8 +168,8 @@ POST /plan/execute
 \section{Determinism Guarantee}
 %─────────────────────────────────────────────────────────────────────────────
 
-\begin{theorem}[CRYS-L Determinism]
-For any oracle $f: \mathbb{R}^n \to \mathbb{R}$ compiled by CRYS-L and any
+\begin{theorem}[QOMN Determinism]
+For any oracle $f: \mathbb{R}^n \to \mathbb{R}$ compiled by QOMN and any
 input vector $\mathbf{x} \in \mathbb{R}^n$, the execution of $f(\mathbf{x})$
 on the same x86-64 hardware produces identical bit-pattern output on every invocation.
 \end{theorem}
@@ -227,13 +227,13 @@ Simulation engine: SCHED\_FIFO real-time scheduling, pinned to 4 cores.
 \toprule
 \textbf{Mode} & \textbf{ops/s} & \textbf{vs Python} & \textbf{Notes} \\
 \midrule
-CRYS-L JIT (single plan)   & 117,000,000 & 51,136$\times$      & HTTP + JSON |
-CRYS-L AVX2 sweep (batch)  & 3,500,000,000 & 1,529,476$\times$ & Pure compute \\
+QOMN JIT (single plan)   & 117,000,000 & 51,136$\times$      & HTTP + JSON |
+QOMN AVX2 sweep (batch)  & 3,500,000,000 & 1,529,476$\times$ & Pure compute \\
 Python equivalent           & 2,288        & 1$\times$           & Baseline \\
 GPT-4 Turbo (sequential)   & $\approx$1.25 & 0.00055$\times$   & $\approx$800ms/call \\
 \midrule
-\textbf{CRYS-L vs Python (benchmark)} & — & \textbf{1.53 billion$\times$} & Paper claim \\
-\textbf{CRYS-L vs GPT-4 (compute)} & — & \textbf{88,888$\times$} & 9µs vs 800ms \\
+\textbf{QOMN vs Python (benchmark)} & — & \textbf{1.53 billion$\times$} & Paper claim \\
+\textbf{QOMN vs GPT-4 (compute)} & — & \textbf{88,888$\times$} & 9µs vs 800ms \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -261,7 +261,7 @@ plan\_nfpa13\_demand   & 12 & 19 & 28 \\
 
 \textbf{Key observation:} Roundtrip latency is $\sim\!23{,}000\times$ greater than compute
 latency. The 220\,ms roundtrip is 99.996\% network/JSON overhead.
-CRYS-L compute is not the bottleneck.
+QOMN compute is not the bottleneck.
 
 \subsection{Adversarial Resilience (NaN-Shield)}
 
@@ -312,7 +312,7 @@ L6: Solid State     & Crystallized frequent patterns & 28\% & 3\,ms \\
 L4: HDC Intuition   & 10K-dim binary hypervectors    & 19\% & 5\,ms \\
 L3: Pattern Memory  & N-gram semantic clusters       & 11\% & 12\,ms \\
 L2: Concept Graph   & Domain concept traversal       & 5\%  & 35\,ms \\
-L1: CRYS-L Oracle   & JIT-compiled domain plan       & 3\%  & 9\,$\mu$s + net \\
+L1: QOMN Oracle   & JIT-compiled domain plan       & 3\%  & 9\,$\mu$s + net \\
 \midrule
 \textbf{Weighted mean} & & & \textbf{47\,ms} \\
 \bottomrule
@@ -336,7 +336,7 @@ elif "gpt" in q or "llm" in q:
 elif "pareto" in q:
     return intent="pareto"          # PARETO_ANALYSIS card
 else:
-    # Route to CRYS-L domain plan
+    # Route to QOMN domain plan
     return intent="calculation"
 \end{lstlisting}
 
@@ -361,7 +361,7 @@ Result: linear throughput scaling to 12 cores (vs plateau at 4 cores with locks)
 
 \begin{table}[h]
 \centering
-\caption{CRYS-L v3.2 engineering domain coverage}
+\caption{QOMN v3.2 engineering domain coverage}
 \label{tab:domains}
 \begin{tabular}{lll}
 \toprule
@@ -422,7 +422,7 @@ Comparison      & \texttt{COMPARISON}         & Throughput/speedup table \\
 \caption{Comparison with alternative approaches}
 \begin{tabularx}{\textwidth}{lXXX}
 \toprule
-\textbf{Property} & \textbf{LLM (GPT-4)} & \textbf{FEA software} & \textbf{Qomni+CRYS-L} \\
+\textbf{Property} & \textbf{LLM (GPT-4)} & \textbf{FEA software} & \textbf{Qomni+QOMN} \\
 \midrule
 Output type     & Probable text         & Numeric (FEM)         & Exact float64 \\
 Deterministic?  & No                    & Yes                   & Yes \\
@@ -435,7 +435,7 @@ Open source     & No                    & No                    & Apache-2.0 \\
 \end{tabularx}
 \end{table}
 
-CRYS-L is most similar in spirit to Julia~\cite{bezanson2017julia}'s JIT-compiled
+QOMN is most similar in spirit to Julia~\cite{bezanson2017julia}'s JIT-compiled
 scientific computing, but is more restricted (no general programming) and achieves
 higher throughput via SIMD specialization on closed-form engineering expressions.
 
@@ -447,17 +447,17 @@ All results in this paper are live API endpoints:
 
 \begin{lstlisting}[caption={Reproduce benchmark results}]
 # Throughput proof (live AVX2 measurement)
-curl https://qomni.clanmarketer.com/crysl/api/simulation/simd_density
+curl https://qomni.clanmarketer.com/qomn/api/simulation/simd_density
 
 # Adversarial resilience (100k inputs, 0 panics)
-curl https://qomni.clanmarketer.com/crysl/api/simulation/adversarial
+curl https://qomni.clanmarketer.com/qomn/api/simulation/adversarial
 
 # LLM comparison (1.53B× speedup)
-curl https://qomni.clanmarketer.com/crysl/api/benchmark/vs_llm
+curl https://qomni.clanmarketer.com/qomn/api/benchmark/vs_llm
 
 # Determinism: 10 identical outputs
 for i in {1..10}; do
-  curl -s -X POST https://qomni.clanmarketer.com/crysl/api/plan/execute \
+  curl -s -X POST https://qomni.clanmarketer.com/qomn/api/plan/execute \
     -H "Content-Type: application/json" \
     -d '{"plan":"plan_pump_sizing",
          "params":{"Q_gpm":500,"P_psi":100,"eff":0.75}}' \
@@ -467,7 +467,7 @@ done
 # Expected: 16.835017... printed 10× (bit-exact)
 \end{lstlisting}
 
-Source code and test suite: \url{https://github.com/condesi/crysl}
+Source code and test suite: \url{https://github.com/condesi/qomn}
 
 %─────────────────────────────────────────────────────────────────────────────
 \section{Conclusion}
@@ -481,7 +481,7 @@ do what each does best:
 \begin{itemize}
 \item \textbf{Intent router:} Understands ``500 gpm pump NFPA 20'' → routes to
       \texttt{plan\_pump\_sizing} with parameters extracted.
-\item \textbf{CRYS-L oracle:} Computes exactly 16.835017...\,HP, bit-exact,
+\item \textbf{QOMN oracle:} Computes exactly 16.835017...\,HP, bit-exact,
       in 9\,$\mu$s, with no hallucination possible.
 \end{itemize}
 
@@ -489,8 +489,8 @@ The system achieves 1.53 billion$\times$ throughput advantage on deterministic t
 zero hallucination risk, and 100\% output determinism---properties that are
 architecturally impossible for autoregressive language models.
 
-\textbf{Live demo:} \url{https://qomni.clanmarketer.com/crysl/} \\
-\textbf{Source:} \url{https://github.com/condesi/crysl}
+\textbf{Live demo:} \url{https://qomni.clanmarketer.com/qomn/} \\
+\textbf{Source:} \url{https://github.com/condesi/qomn}
 
 %─────────────────────────────────────────────────────────────────────────────
 \bibliographystyle{plain}

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════
-// CRYS-L v0.4 — Type Checker
+// QOMN v0.4 — Type Checker
 // Validates ternary type compatibility and oracle signatures.
 // ═══════════════════════════════════════════════════════════════════════
 
@@ -33,7 +33,7 @@ impl TypeEnv {
                     self.oracles.insert(o.name.clone(), (param_types, o.ret_ty.clone()));
                 }
                 Decl::Crystal(c) => {
-                    self.crystals.insert(c.name.clone(), c.path.clone());
+                    self.qomntals.insert(c.name.clone(), c.path.clone());
                     self.vars.insert(c.name.clone(), Type::Tmat(168, 4864)); // default crystal type
                 }
                 Decl::Let(name, ty, _) => {
@@ -95,7 +95,7 @@ impl TypeEnv {
         let mut errors = vec![];
         match &r.target {
             RouteTarget::Crystal(n) => {
-                if !self.crystals.contains_key(n) {
+                if !self.qomntals.contains_key(n) {
                     errors.push(format!("route target crystal '{}' not declared", n));
                 }
             }

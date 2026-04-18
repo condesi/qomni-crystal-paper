@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════════
-// CRYS-L v0.5 — Tree-walking VM (Interpreter)
-// Executes CRYS-L programs directly from the AST.
+// QOMN v0.5 — Tree-walking VM (Interpreter)
+// Executes QOMN programs directly from the AST.
 // Connects to Qomni crystal kernel via HTTP API.
 // ═══════════════════════════════════════════════════════════════════════
 
@@ -45,7 +45,7 @@ pub struct QomniConfig {
 impl Default for QomniConfig {
     fn default() -> Self {
         Self {
-            base_url: "http://109.123.245.234:8090".into(),
+            base_url: "http://qomni.clanmarketer.com:8090".into(),
             api_key:  "adesur-whatsapp-2026-secret".into(),
         }
     }
@@ -97,7 +97,7 @@ impl Vm {
                 Decl::Crystal(c) => {
                     // Register crystal with Qomni server
                     self.register_crystal(c);
-                    self.env.crystals.insert(c.name.clone(), c.clone());
+                    self.env.qomntals.insert(c.name.clone(), c.clone());
                 }
                 Decl::Pipe(p)    => { self.env.pipes.insert(p.name.clone(), p.clone()); }
                 Decl::Route(r)   => { self.env.routes.push(r.clone()); }
@@ -356,7 +356,7 @@ impl Vm {
     }
 
     fn register_crystal(&self, c: &CrystalDecl) {
-        // In production: POST /qomni/crystal/register
+        // In production: POST /qomni/qomn/register
         println!("  crystal '{}' registered from '{}'", c.name, c.path);
     }
 }
