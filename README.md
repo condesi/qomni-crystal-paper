@@ -2,7 +2,7 @@
 
 **56 engineering formulas. Zero variance. 9µs latency. Verify with curl.**
 
-[![Live Demo](https://img.shields.io/badge/demo-live-00e5ff)](https://qomni.clanmarketer.com/qomn/)
+[![Live Demo](https://img.shields.io/badge/demo-live-00e5ff)](https://desarrollador.xyz/benchmark.html)
 [![Benchmarks](https://img.shields.io/badge/benchmarks-live-e040fb)](https://desarrollador.xyz/benchmark.html)
 [![Tests](https://img.shields.io/badge/tests-5%20suites-green)](https://github.com/condesi/qomn/tree/main/tests)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
@@ -13,7 +13,7 @@ QOMN compiles physics and engineering formulas directly to Cranelift JIT + AVX2 
 ```bash
 # Verify determinism yourself — run it 10 times, compare:
 for i in {1..10}; do
-  curl -s -X POST https://qomni.clanmarketer.com/qomn/api/plan/execute \
+  curl -s -X POST https://desarrollador.xyz/api/plan/execute \
     -H "Content-Type: application/json" \
     -d '{"plan":"plan_pump_sizing","params":{"Q_gpm":500,"P_psi":100,"eff":0.75}}' \
     | python3 -c "import sys,json; print(json.load(sys.stdin)['result']['nfpa20_pump_hp'])"
@@ -54,11 +54,11 @@ No weights. No approximation. No variance.
 
 | Metric | Value | Verification |
 |--------|-------|-------------|
-| Compute throughput (JIT) | **101,000,000 ops/s** | [/simulation/simd_density](https://qomni.clanmarketer.com/qomn/api/simulation/simd_density) |
-| Compute throughput (AVX2 sweep) | **3,500,000,000 ops/s** | [benchmark dashboard](https://qomni.clanmarketer.com/qomn/demo/benchmark.html) |
+| Compute throughput (JIT) | **101,000,000 ops/s** | [/simulation/simd_density](https://desarrollador.xyz/api/simulation/simd_density) |
+| Compute throughput (AVX2 sweep) | **3,500,000,000 ops/s** | [benchmark dashboard](https://desarrollador.xyz/benchmark.html) |
 | Compute latency p50 | **9µs** | `total_ns` field in API response |
 | Compute latency p99 | **21µs** | `tests/slo_latency.rs` |
-| Speedup vs Python (benchmark) | **1.53 billion×** | [/benchmark/vs_llm](https://qomni.clanmarketer.com/qomn/api/benchmark/vs_llm) |
+| Speedup vs Python (benchmark) | **1.53 billion×** | [/benchmark/vs_llm](https://desarrollador.xyz/api/benchmark/vs_llm) |
 | Speedup vs GPT-4 (compute) | **88,888×** | 9µs vs 800ms |
 | Numeric variance (10 runs) | **0.000000000000** | `tests/repeatability.rs` |
 | Panics (100k adversarial inputs) | **0** | `tests/adversarial.rs` |
@@ -143,7 +143,7 @@ oracle nfpa20_pump_hp(flow_gpm: float, head_psi: float, eff: float) -> float:
 ```bash
 # Run 10 times, verify identical
 for i in {1..10}; do
-  curl -s -X POST https://qomni.clanmarketer.com/qomn/api/plan/execute \
+  curl -s -X POST https://desarrollador.xyz/api/plan/execute \
     -H "Content-Type: application/json" \
     -d '{"plan":"plan_pump_sizing","params":{"Q_gpm":500,"P_psi":100,"eff":0.75}}' \
     | python3 -c "import sys,json; print(json.load(sys.stdin)['result']['nfpa20_pump_hp'])"
@@ -199,24 +199,24 @@ cargo test --test all_56_plans -- --nocapture
 
 ```bash
 # Health check
-curl https://qomni.clanmarketer.com/qomn/api/health
+curl https://desarrollador.xyz/api/health
 
 # Fire pump sizing (NFPA 20)
-curl -X POST https://qomni.clanmarketer.com/qomn/api/plan/execute \
+curl -X POST https://desarrollador.xyz/api/plan/execute \
   -H "Content-Type: application/json" \
   -d '{"plan":"plan_pump_sizing","params":{"Q_gpm":500,"P_psi":100,"eff":0.75}}'
 
 # List all 56 plans
-curl https://qomni.clanmarketer.com/qomn/api/plans | python3 -m json.tool
+curl https://desarrollador.xyz/api/plans | python3 -m json.tool
 
 # Throughput proof (live)
-curl https://qomni.clanmarketer.com/qomn/api/simulation/simd_density
+curl https://desarrollador.xyz/api/simulation/simd_density
 
 # Adversarial resilience proof
-curl https://qomni.clanmarketer.com/qomn/api/simulation/adversarial
+curl https://desarrollador.xyz/api/simulation/adversarial
 
 # All 4 benchmark proofs
-curl https://qomni.clanmarketer.com/qomn/api/benchmark/all | python3 -m json.tool
+curl https://desarrollador.xyz/api/benchmark/vs_llm | python3 -m json.tool
 ```
 
 ---
@@ -274,7 +274,7 @@ condesi/qomni-crystal-paper/
 
 ---
 
-**Live demo:** https://qomni.clanmarketer.com/qomn/
+**Live demo:** https://desarrollador.xyz/benchmark.html
 **Full source:** https://github.com/condesi/qomn
 **Contact:** percy.rojas@condesi.pe
 **License:** Apache-2.0
